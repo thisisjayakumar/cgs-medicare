@@ -1,5 +1,5 @@
 from selenium import webdriver
-import chromedriver_autoinstaller
+from selenium.webdriver.chrome import options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,10 +8,12 @@ import time
 
 
 def run_selenium_script(input_numbers):
-    options = Options()
-    options.headless = True
-    chromedriver_autoinstaller.install()
-    driver = webdriver.Chrome(options=options)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(options=chrome_options, executable_path="/usr/bin/chromedriver")
 
     driver.get("https://www.cgsmedicare.com/medicare_dynamic/j15/ptpb/ptp/ptp.aspx")
 
