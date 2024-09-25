@@ -4,3 +4,4 @@ serverless-wsgi
 awscli
 gunicorn
 flask-gunicorn-docker
+gevent
