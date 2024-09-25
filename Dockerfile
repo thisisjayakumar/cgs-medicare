@@ -1,11 +1,8 @@
-FROM python:3.9-slim
-
-WORKDIR /app
+FROM public.ecr.aws/lambda/python:3.9
 
 COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["app.handler"]

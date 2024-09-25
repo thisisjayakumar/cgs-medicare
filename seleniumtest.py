@@ -1,11 +1,17 @@
 from selenium import webdriver
+import chromedriver_autoinstaller
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import time
 
+
 def run_selenium_script(input_numbers):
-    driver = webdriver.Chrome()
+    options = Options()
+    options.headless = True
+    chromedriver_autoinstaller.install()
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://www.cgsmedicare.com/medicare_dynamic/j15/ptpb/ptp/ptp.aspx")
 
@@ -20,28 +26,35 @@ def run_selenium_script(input_numbers):
 
     time.sleep(1)
 
-    search_input = driver.find_element(By.NAME, "txtProcCode")
-
-    search_input.send_keys(input_numbers)
-
-    time.sleep(1)
-
-    search_button = driver.find_element(By.NAME, "Button1")
-
-    search_button.click()
-
-    time.sleep(1)
-
-    wait = WebDriverWait(driver, 5)
-    table = wait.until(EC.presence_of_element_located((By.ID, "DataGrid1")))
-
-    rows = table.find_elements(By.TAG_NAME, "tr")
-
     results = []
-    for row in rows:
-        cells = row.find_elements(By.TAG_NAME, "td")
-        row_data = [cell.text for cell in cells]
-        results.append(row_data)
+
+    for input_number in input_numbers:
+        search_input = driver.find_element(By.NAME, "txtProcCode")
+        search_input.clear()
+        search_input.send_keys(str(input_number))
+
+        time.sleep(1)
+
+        search_button = driver.find_element(By.NAME, "Button1")
+        search_button.click()
+
+        time.sleep(1)
+
+        wait = WebDriverWait(driver, 5)
+        table = wait.until(EC.presence_of_element_located((By.ID, "DataGrid1")))
+
+        rows = table.find_elements(By.TAG_NAME, "tr")
+
+        current_results = []
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+            row_data = [cell.text for cell in cells]
+            current_results.append(row_data)
+
+        results.append({
+            'input_number': input_number,
+            'results': current_results
+        })
 
     driver.quit()
     return results
