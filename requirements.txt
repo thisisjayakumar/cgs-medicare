@@ -2,3 +2,5 @@ Flask>=2.0.2
 selenium
 serverless-wsgi
 awscli
+gunicorn
+flask-gunicorn-docker
