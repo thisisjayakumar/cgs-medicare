@@ -1,11 +1,15 @@
-FROM public.ecr.aws/lambda/python:3.9
+FROM python:3.12-slim
 
-RUN yum install -y google-chrome-stable
-RUN yum install -y chromedriver
+RUN apt-get update && apt-get install -y \
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["app.handler"]
+CMD ["gunicorn", "-w", "4", "app:app", "--bind", "0.0.0.0:5000"]
