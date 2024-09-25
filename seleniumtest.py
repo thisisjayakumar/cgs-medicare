@@ -13,7 +13,7 @@ def run_selenium_script(input_numbers):
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    driver = webdriver.Chrome(options=chrome_options, executable_path="/usr/bin/chromedriver")
+    driver = webdriver.Chrome(options=chrome_options)
 
     driver.get("https://www.cgsmedicare.com/medicare_dynamic/j15/ptpb/ptp/ptp.aspx")
 
