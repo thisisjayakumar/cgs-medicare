@@ -37,7 +37,9 @@ def run_selenium_script(input_numbers):
 
         time.sleep(1)
 
-        search_button = driver.find_element(By.NAME, "Button1")
+        search_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.NAME, "Button1"))
+        )
         search_button.click()
 
         time.sleep(1)
